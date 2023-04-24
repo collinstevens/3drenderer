@@ -2,9 +2,23 @@
 #include <stdbool.h>
 #include <SDL.h>
 
-bool is_running = false;
-SDL_Window* window = NULL;
-SDL_Renderer* renderer = NULL;
+#define internal static 
+#define local_persist static 
+#define global_variable static
+
+typedef int8_t i8;
+typedef int16_t i16;
+typedef int32_t i32;
+typedef int64_t i64;
+
+typedef uint8_t u8;
+typedef uint16_t u16;
+typedef uint32_t u32;
+typedef uint64_t u64;
+
+global_variable bool is_running = false;
+global_variable SDL_Window* window = NULL;
+global_variable SDL_Renderer* renderer = NULL;
 
 bool initialize_window(void) {
     if (SDL_Init(SDL_INIT_EVERYTHING) != 0) {
