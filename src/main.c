@@ -25,14 +25,20 @@ global_variable SDL_Renderer* renderer = NULL;
 global_variable u32* color_buffer = NULL;
 global_variable SDL_Texture* color_buffer_texture = NULL;
 
-global_variable u32 window_width = 800;
-global_variable u32 window_height = 600;
+global_variable u32 window_width = 0;
+global_variable u32 window_height = 0;
 
 bool initialize_window(void) {
     if (SDL_Init(SDL_INIT_EVERYTHING) != 0) {
         fprintf(stderr, "Error initializing SDL.\n");
         return false;
     }
+
+    SDL_DisplayMode display_mode;
+    SDL_GetCurrentDisplayMode(0, &display_mode);
+
+    window_width = display_mode.w;
+    window_height = display_mode.h;
 
     window = SDL_CreateWindow(
         NULL,
@@ -54,6 +60,8 @@ bool initialize_window(void) {
         fprintf(stderr, "Error creating SDL renderer.\n");
         return false;
     }
+
+    // SDL_SetWindowFullscreen(window, SDL_WINDOW_FULLSCREEN);
 
     return true;
 }
@@ -90,6 +98,28 @@ void update(void) {
 
 }
 
+void draw_grid(u32 color, u32 step) {
+    for (u32 y = 0; y < window_height; y++) {
+        for (u32 x = 0; x < window_width; x += step) {
+            color_buffer[window_width * y + x] = color;
+        }
+    }
+
+    for (u32 y = 0; y < window_height; y += step) {
+        for (u32 x = 0; x < window_width; x++) {
+            color_buffer[window_width * y + x] = color;
+        }
+    }
+}
+
+void draw_rect(u32 in_x, u32 in_y, u32 length, u32 width, u32 color) {
+    for (u32 y = in_y; y < window_height && y < in_y + width; y++) {
+        for (u32 x = in_x; x < window_width && x < in_x + length; x++) {
+            color_buffer[window_width * y + x] = color;
+        }
+    }
+}
+
 void render_color_buffer(void) {
     SDL_UpdateTexture(
         color_buffer_texture,
@@ -107,20 +137,22 @@ void render_color_buffer(void) {
 }
 
 void clear_color_buffer(u32 color) {
-    for (size_t y = 0; y < window_height; y++) {
-        for (size_t x = 0; x < window_width; x++) {
+    for (u32 y = 0; y < window_height; y++) {
+        for (u32 x = 0; x < window_width; x++) {
             color_buffer[window_width * y + x] = color;
         }
     }
-    
 }
 
 void render(void) {
     SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
     SDL_RenderClear(renderer);
 
+    // draw_grid(0xFF333333, 10);
+    draw_rect(100, 100, 400, 200, 0xFFAED6F1);
+
     render_color_buffer();
-    clear_color_buffer(0xFFFFFF00);
+    clear_color_buffer(0xFF000000);
 
     SDL_RenderPresent(renderer);
 }
