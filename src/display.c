@@ -41,7 +41,15 @@ bool initialize_window(void) {
     return true;
 }
 
-void draw_grid(u32 color, u32 step) {
+void draw_dotted_grid(u32 color, u32 step) {
+    for (u32 y = 0; y < window_height; y += step) {
+        for (u32 x = 0; x < window_width; x += step) {
+            color_buffer[window_width * y + x] = color;
+        }
+    }
+}
+
+void draw_ruled_grid(u32 color, u32 step) {
     for (u32 y = 0; y < window_height; y++) {
         for (u32 x = 0; x < window_width; x += step) {
             color_buffer[window_width * y + x] = color;

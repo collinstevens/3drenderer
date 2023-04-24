@@ -18,7 +18,8 @@ extern u32 window_height;
 bool initialize_window(void);
 void destroy_window(void);
 
-void draw_grid(u32 color, u32 step);
+void draw_dotted_grid(u32 color, u32 step);
+void draw_ruled_grid(u32 color, u32 step);
 void draw_rect(u32 in_x, u32 in_y, u32 length, u32 width, u32 color);
 
 void render_color_buffer(void);

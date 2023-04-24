@@ -51,7 +51,9 @@ void render(void) {
     SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
     SDL_RenderClear(renderer);
 
-    draw_grid(0xFF333333, 10);
+    draw_dotted_grid(0xFF333333, 10);
+    // draw_ruled_grid(0xFF333333, 10);
+    
     draw_rect(100, 100, 400, 200, 0xFFAED6F1);
 
     render_color_buffer();
