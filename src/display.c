@@ -71,6 +71,12 @@ void draw_rect(u32 in_x, u32 in_y, u32 length, u32 width, u32 color) {
     }
 }
 
+void draw_pixel(int x, int y, u32 color) {
+    if (x < window_width && y < window_height)  {
+        color_buffer[window_width * y + x] = color;
+    }
+}
+
 void render_color_buffer(void) {
     SDL_UpdateTexture(
         color_buffer_texture,
