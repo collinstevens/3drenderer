@@ -9,7 +9,9 @@
 v3 cube_points[N_POINTS];
 v2 projected_points[N_POINTS];
 
-float fov_factor = 128;
+v3 camera_position = { .x = 0, .y = 0, .z = -5 };
+
+float fov_factor = 640;
 
 global_variable bool is_running = false;
 
@@ -63,8 +65,8 @@ void process_input(void) {
 
 v2 project(v3 point) {
     v2 projection = {
-        .x = point.x * fov_factor,
-        .y = point.y * fov_factor
+        .x = point.x * fov_factor / point.z,
+        .y = point.y * fov_factor / point.z
     };
 
     return projection;
@@ -73,6 +75,8 @@ v2 project(v3 point) {
 void update(void) {
     for (int i = 0; i < N_POINTS; i++) {
         v3 point = cube_points[i];
+
+        point.z -= camera_position.z;
 
         v2 projection = project(point);
 
