@@ -1,8 +1,15 @@
 #include "display.h"
 #include "typedefs.h"
+#include "vector.h"
 
 #include <stdbool.h>
 #include <SDL.h>
+
+#define N_POINTS (9 * 9 * 9)
+v3 cube_points[N_POINTS];
+v2 projected_points[N_POINTS];
+
+float fov_factor = 128;
 
 global_variable bool is_running = false;
 
@@ -24,6 +31,17 @@ void setup(void) {
         SDL_TEXTUREACCESS_STREAMING,
         window_width,
         window_height);
+
+    int point_count = 0;
+
+    for (float x = -1; x <= 1; x += .25) {
+        for (float y = -1; y <= 1; y += .25) {
+            for (float z = -1; z <= 1; z += .25) {
+                v3 point = { .x = x, .y = y, .z = z };
+                cube_points[point_count++] = point;
+            }
+        }
+    }
 }
 
 void process_input(void) {
@@ -43,21 +61,47 @@ void process_input(void) {
     }
 }
 
-void update(void) {
+v2 project(v3 point) {
+    v2 projection = {
+        .x = point.x * fov_factor,
+        .y = point.y * fov_factor
+    };
 
+    return projection;
+}
+
+void update(void) {
+    for (int i = 0; i < N_POINTS; i++) {
+        v3 point = cube_points[i];
+
+        v2 projection = project(point);
+
+        projected_points[i] = projection;
+    }
 }
 
 void render(void) {
-    SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
-    SDL_RenderClear(renderer);
+    // SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
+    // SDL_RenderClear(renderer);
 
     draw_dotted_grid(0xFF333333, 10);
     // draw_ruled_grid(0xFF333333, 10);
     
-    draw_rect(100, 100, 400, 200, 0xFFAED6F1);
+    // draw_rect(100, 100, 400, 200, 0xFFAED6F1);
 
-    draw_pixel(20, 20, 0xFF0000FF);
+    // draw_pixel(20, 20, 0xFF0000FF);
 
+    for (int i = 0; i < N_POINTS; i++) {
+        v2 point = projected_points[i];
+        draw_rect(
+            point.x + window_width / 2,
+            point.y + window_height / 2,
+            4,
+            4,
+            0xFFFFFF00
+        );
+    }
+    
     render_color_buffer();
     clear_color_buffer(0xFF000000);
 
