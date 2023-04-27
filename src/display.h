@@ -6,6 +6,9 @@
 #include <stdbool.h>
 #include <SDL.h>
 
+#define FPS 30
+#define FRAME_TARGET_TIME (1000 / FPS)
+
 extern SDL_Window* window;
 extern SDL_Renderer* renderer;
 
@@ -21,7 +24,7 @@ void destroy_window(void);
 void draw_dotted_grid(u32 color, u32 step);
 void draw_ruled_grid(u32 color, u32 step);
 void draw_rect(u32 in_x, u32 in_y, u32 length, u32 width, u32 color);
-void draw_pixel(int x, int y, u32 color);
+void draw_pixel(i32 x, i32 y, u32 color);
 
 void render_color_buffer(void);
 void clear_color_buffer(u32 color);

@@ -15,6 +15,7 @@ v3 cube_rotation = { .x = 0, .y = 0, .z = 0 };
 float fov_factor = 640;
 
 bool is_running = false;
+i32 previous_frame_time = 0;
 
 SDL_Window* window = NULL;
 SDL_Renderer* renderer = NULL;
@@ -35,7 +36,7 @@ void setup(void) {
         window_width,
         window_height);
 
-    int point_count = 0;
+    i32 point_count = 0;
 
     for (float x = -1; x <= 1; x += .25) {
         for (float y = -1; y <= 1; y += .25) {
@@ -74,11 +75,15 @@ v2 project(v3 point) {
 }
 
 void update(void) {
+    while (!SDL_TICKS_PASSED(SDL_GetTicks(), previous_frame_time + FRAME_TARGET_TIME));
+
+    previous_frame_time = SDL_GetTicks();
+
     cube_rotation.x += 0.01;
     cube_rotation.y += 0.01;
     cube_rotation.z += 0.01;
 
-    for (int i = 0; i < N_POINTS; i++) {
+    for (i32 i = 0; i < N_POINTS; i++) {
         v3 point = cube_points[i];
 
         point = v3_rotate_x(point, cube_rotation.x);
@@ -104,7 +109,7 @@ void render(void) {
 
     // draw_pixel(20, 20, 0xFF0000FF);
 
-    for (int i = 0; i < N_POINTS; i++) {
+    for (i32 i = 0; i < N_POINTS; i++) {
         v2 point = projected_points[i];
         draw_rect(
             point.x + window_width / 2,
@@ -121,7 +126,7 @@ void render(void) {
     SDL_RenderPresent(renderer);
 }
 
-int main(void) {
+i32 main(void) {
     is_running = initialize_window();
 
     setup();
