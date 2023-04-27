@@ -1,7 +1,7 @@
 #include <math.h>
 #include "vector.h"
 
-v3 v3_rotate_x(v3 v, float angle) {
+v3 v3_rotate_x(v3 v, f32 angle) {
     v3 rotation = {
         .x = v.x,
         .y = v.y * cos(angle) - v.z * sin(angle),
@@ -11,7 +11,7 @@ v3 v3_rotate_x(v3 v, float angle) {
     return rotation;
 }
 
-v3 v3_rotate_y(v3 v, float angle) {
+v3 v3_rotate_y(v3 v, f32 angle) {
     v3 rotation = {
         .x = v.x * cos(angle) - v.z * sin(angle),
         .y = v.y,
@@ -21,7 +21,7 @@ v3 v3_rotate_y(v3 v, float angle) {
     return rotation;
 }
 
-v3 v3_rotate_z(v3 v, float angle) {
+v3 v3_rotate_z(v3 v, f32 angle) {
     v3 rotation = {
         .x = v.x * cos(angle) - v.y * sin(angle),
         .y = v.x * sin(angle) + v.y * cos(angle),

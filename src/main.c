@@ -12,7 +12,7 @@ v2 projected_points[N_POINTS];
 v3 camera_position = { .x = 0, .y = 0, .z = -5 };
 v3 cube_rotation = { .x = 0, .y = 0, .z = 0 };
 
-float fov_factor = 640;
+f32 fov_factor = 640;
 
 bool is_running = false;
 i32 previous_frame_time = 0;
@@ -38,9 +38,9 @@ void setup(void) {
 
     i32 point_count = 0;
 
-    for (float x = -1; x <= 1; x += .25) {
-        for (float y = -1; y <= 1; y += .25) {
-            for (float z = -1; z <= 1; z += .25) {
+    for (f32 x = -1; x <= 1; x += .25) {
+        for (f32 y = -1; y <= 1; y += .25) {
+            for (f32 z = -1; z <= 1; z += .25) {
                 v3 point = { .x = x, .y = y, .z = z };
                 cube_points[point_count++] = point;
             }
