@@ -14,7 +14,7 @@ v3 cube_rotation = { .x = 0, .y = 0, .z = 0 };
 
 float fov_factor = 640;
 
-global_variable bool is_running = false;
+bool is_running = false;
 
 SDL_Window* window = NULL;
 SDL_Renderer* renderer = NULL;
