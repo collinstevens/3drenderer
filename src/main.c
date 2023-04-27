@@ -10,6 +10,7 @@ v3 cube_points[N_POINTS];
 v2 projected_points[N_POINTS];
 
 v3 camera_position = { .x = 0, .y = 0, .z = -5 };
+v3 cube_rotation = { .x = 0, .y = 0, .z = 0 };
 
 float fov_factor = 640;
 
@@ -73,8 +74,16 @@ v2 project(v3 point) {
 }
 
 void update(void) {
+    cube_rotation.x += 0.01;
+    cube_rotation.y += 0.01;
+    cube_rotation.z += 0.01;
+
     for (int i = 0; i < N_POINTS; i++) {
         v3 point = cube_points[i];
+
+        point = v3_rotate_x(point, cube_rotation.x);
+        point = v3_rotate_y(point, cube_rotation.y);
+        point = v3_rotate_z(point, cube_rotation.z);
 
         point.z -= camera_position.z;
 
