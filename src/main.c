@@ -75,7 +75,16 @@ v2 project(v3 point) {
 }
 
 void update(void) {
-    while (!SDL_TICKS_PASSED(SDL_GetTicks(), previous_frame_time + FRAME_TARGET_TIME));
+    i32 ticks_since_last_frame = SDL_GetTicks() - previous_frame_time;
+    
+    bool ahead = ticks_since_last_frame < FRAME_TARGET_TIME; // 33 - 32 = 1
+    bool behind = ticks_since_last_frame > FRAME_TARGET_TIME; // 33 - 34 = -1
+    bool on_time = ticks_since_last_frame == FRAME_TARGET_TIME; // 33 - 33 = 0
+
+    if (ahead) {
+        i32 ticks_to_wait = FRAME_TARGET_TIME - ticks_since_last_frame;
+        SDL_Delay(ticks_to_wait);
+    }
 
     previous_frame_time = SDL_GetTicks();
 
